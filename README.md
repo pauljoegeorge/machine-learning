@@ -1,2 +1,5 @@
 # machine-learning
-hands on python and R
+Learn using python
+
+## Learning materials
+https://hackmd.io/Wt9ZHT5cRJ6pumnHuvKiJA?view
