@@ -55,9 +55,31 @@ sc_X = StandardScaler()
 X_train = sc_X.fit_transform(X_train)
 X_test = sc_X.fit_transform(X_test)
 """
-
+ 
 #fitting linear regression to training set
 # by simple linear regression, it will learn the correaltion (y = mx + c ) 
 from sklearn.linear_model import LinearRegression
 regressor = LinearRegression()
 regressor.fit(X_train, Y_train)
+
+#predict the test set results (salary)
+y_pred = regressor.predict(X_test)
+
+
+#visualise the `train set` results
+plt.scatter(X_train, Y_train, color = 'red')
+plt.plot(X_train, regressor.predict(X_train), color = 'blue')
+
+plt.title('Salary vs Experience (Training Set)')
+plt.xlabel('Years of experience')
+plt.ylabel('Salary')
+plt.show()
+
+#visualise the `test set` results
+plt.scatter(X_test, Y_test, color = 'red')
+plt.plot(X_train, regressor.predict(X_train), color = 'blue')
+
+plt.title('Salary vs Experience (Test Set)')
+plt.xlabel('Years of experience')
+plt.ylabel('Salary')
+plt.show()
