@@ -30,7 +30,6 @@ Build linear regression model and polynomial regression model for comparison
 
 from sklearn.linear_model import LinearRegression
 # Fitting linear regression to dataset
-X = X.reshape(-1, 1)
 lin_reg = LinearRegression()
 lin_reg.fit(X,Y)
 
@@ -68,4 +67,4 @@ plt.show()
 lin_reg.predict([[6.5]])  # x_value: 6.5 
 
 # predicting result with polynomial regression
-#lin_reg2.predict(poly_reg.fit_transform(6.5))
+lin_reg2.predict(poly_reg.fit_transform([[6.5]]))
