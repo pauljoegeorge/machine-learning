@@ -32,3 +32,25 @@ from sklearn.preprocessing import StandardScaler
 sc_X = StandardScaler()
 X_train = sc_X.fit_transform(X_train)
 X_test = sc_X.fit_transform(X_test)
+
+# Fitting Logistic regression to training set
+from sklearn.linear_model import LogisticRegression
+classifier = LogisticRegression(random_state = 0)
+classifier.fit(X_train, Y_train)
+
+# predicting the test set results
+y_pred = classifier.predict(X_test)
+
+# Making the confusion matrix
+from sklearn.metrics import confusion_matrix
+cm = confusion_matrix(Y_test, y_pred)  # left to right diagonal -> correct prediction .. leftt to right -> incorrect prediction.
+"""
+|64, 10|
+|      |   ==> 64,30 correct predictions, (10 and 20 )  wrong predictions
+|20, 30|
+"""
+
+# visualising the Training set results
+#green & red region are the predictions. green dot -> they purchased , red dot -> didnt purchase
+# straight line in graph -> prediction boundary.   
+
