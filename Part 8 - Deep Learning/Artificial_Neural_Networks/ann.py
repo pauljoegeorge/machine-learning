@@ -46,4 +46,34 @@ classifier = Sequential()  #sequence of layers
 
 # Adding input layer and first hidden layer
                 #no of nodes for hidden layer, initalizers, activation mode for hidden layer
-classifier.add(Dense(6, kernel_initializer='uniform', activation='relu', input_shape=(11,)))   
+classifier.add(Dense(units=6, kernel_initializer='uniform', activation='relu', input_shape=(11,)))   #expecting 11 input nodes
+
+# Adding the second hidden layer (relu = rectifier)
+classifier.add(Dense(units=6, kernel_initializer='uniform', activation='relu'))   # 2nd hidden layer is not expecting any input from input layer
+
+# Adding output layer, activation function 
+classifier.add(Dense(units=1, kernel_initializer='uniform', activation='sigmoid')) #no of nodes:1
+
+# compiling ANN
+classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics=['accuracy'])
+
+
+# Fitting ANN to Training set
+classifier.fit(X_train, Y_train, batch_size=10, epochs=100)
+
+
+# predict the testset results
+y_pred = classifier.predict(X_test) 
+
+
+
+# -*- Learning -*-
+
+# optimizer => algorithm used for compiling
+# loss -> if there are more than 2 output -> categorical 
+#         if only one, it wil be binary_crossentropy
+
+
+
+
+
