@@ -21,6 +21,7 @@ classifier.add(Convolution2D(32,3,3, input_shape=(64, 64, 3), activation = 'relu
 # we are working on cpu not gpu , so feature map has to be low value.  
 # input shape for colored image (3,256,256) => 3 channel (RGB), size 256 pixel each (2D)
 # since we are using tensorflow backend input shape input will in (64, 64, 3) format
+# (32, 3,3) => size of feature detector and dimensions
 # if using Theano order will be reverse
 # Add activation layer to eliminate non-linearity
 
@@ -33,6 +34,12 @@ classifier.add(Convolution2D(32,3,3, input_shape=(64, 64, 3), activation = 'relu
 classifier.add(MaxPooling2D(pool_size = (2, 2)))
 
 """
+Adding second convolution layer to improve the test_set accuracy
+"""
+#classifier.add(Convolution2D(32,3,3, activation = 'relu')) #input shape is skipped because input to second layer is not images
+#classifier.add(MaxPooling2D(pool_size = (2, 2)))
+"""
+
 # STEP 3 -> FLATTENING
 """
 # create a single vector using pooling output as input
@@ -52,3 +59,38 @@ STEP 5 -> COMPILE WHOLE MODEL
 """
 classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics=['accuracy'])
 # loss -> since we have binary outcome -> binary cross entropy
+
+
+"""
+    PART 2 - Fitting Images to CNN
+"""
+# Data augmentation
+# is a technique to enrich data to get data performance without adding more images, but by tranforming the existing dataset ( like cropping , zooming , blurring etcc..)
+
+from keras.preprocessing.image import ImageDataGenerator
+# check keras documentation: Example of using .flow_from_directory(directory):
+train_datagen = ImageDataGenerator(
+        rescale=1./255,
+        shear_range=0.2,
+        zoom_range=0.2,
+        horizontal_flip=True)
+
+test_datagen = ImageDataGenerator(rescale=1./255)  #image preprocessing
+
+# creating a training set of reduced size 64x64 and creating batches of 32 images.
+training_set = train_datagen.flow_from_directory('dataset/training_set',
+                                                 target_size=(64, 64), #dimensions specified same as above
+                                                 batch_size=32,
+                                                 class_mode='binary')
+# creating a test set of reduced size 64x64 and creating batches of 32 images.
+test_set = test_datagen.flow_from_directory('dataset/test_set',
+                                            target_size=(64, 64), #size of resultant (64 is mentioned above)
+                                            batch_size=32,
+                                            class_mode='binary')
+
+classifier.fit_generator(
+        training_set,
+        steps_per_epoch=8000,
+        epochs=25,
+        validation_data=test_set,
+        validation_steps=2000)  
